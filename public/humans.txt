@@ -1,8 +1,0 @@
-/* humanstxt.org */
-
-/* VULKANO TEAM */
-Jose Paternina
-@josedaniel
-
-Ivan Melendez
-@argordmel

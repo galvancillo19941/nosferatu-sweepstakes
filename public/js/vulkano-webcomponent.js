@@ -25,16 +25,6 @@
     }
   };
   var r = (t3) => new n("string" == typeof t3 ? t3 : t3 + "", void 0, s);
-  var i = (t3, ...e4) => {
-    const o4 = 1 === t3.length ? t3[0] : e4.reduce((e5, s4, o5) => e5 + ((t4) => {
-      if (true === t4._$cssResult$)
-        return t4.cssText;
-      if ("number" == typeof t4)
-        return t4;
-      throw Error("Value passed to 'css' function must be a 'css' function result: " + t4 + ". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.");
-    })(s4) + t3[o5 + 1], t3[0]);
-    return new n(o4, t3, s);
-  };
   var S = (s4, o4) => {
     if (e)
       s4.adoptedStyleSheets = o4.map((t3) => t3 instanceof CSSStyleSheet ? t3 : t3.styleSheet);
@@ -578,28 +568,73 @@
   r4?.({ LitElement: s3 });
   (globalThis.litElementVersions ??= []).push("4.0.4");
 
+  // ../../../tmp/tmp-30873-uBcUrk3dnLe8/nosferatu-sweepstakes/client/components/vulkano-webcomponent/styles.css
+  var styles_default = ".bg-nosferatu{background-color:red}";
+
   // client/components/vulkano-webcomponent/main.js
   var VulkanoWebcomponent = class extends s3 {
-    // createRenderRoot() {
-    //   return this;
-    // }
-    static styles = i`p {
-    color: black;
-    border: 1px solid #333;
-    padding: 5px;
-  }`;
     static properties = {
       name: { type: String }
     };
     constructor() {
       super();
-      this.name = "webcomponent";
+      this.name = "";
+      const sheet = new CSSStyleSheet();
+      sheet.replaceSync(styles_default);
+      this.constructor.stylesheet = sheet;
+    }
+    firstUpdated() {
+      let shoelace_basepath = "/vendors/shoelace";
+      if (window.location.hostname.includes("localhost")) {
+        shoelace_basepath = "/vendors/shoelace";
+      }
+      const shoelacecss = document.createElement("link");
+      shoelacecss.rel = "stylesheet";
+      shoelacecss.href = `${shoelace_basepath}/themes/light.css`;
+      document.head.appendChild(shoelacecss);
+      this.requestUpdate();
+    }
+    connectedCallback() {
+      super.connectedCallback();
+      this.shadowRoot.adoptedStyleSheets = [this.constructor.stylesheet];
     }
     render() {
-      return x`<p>
-      This is a ${this.name} written in plain JS! <br>
-      You can edit this in client/components/vulkano-webcomponent/main.js.
-    </p>`;
+      return x`
+      <div class="bg-nosferatu">
+
+      <h2>Please Enter Your Details</h2>
+
+        <form action="">
+
+        <sl-input label="Your name (as it appears on your ID)"></sl-input>
+        <sl-input label="Your email address"></sl-input>
+
+        <div class="contain-select">
+          <sl-select>
+            <sl-option value="option-1">Option 1</sl-option>
+            <sl-option value="option-2">Option 2</sl-option>
+            <sl-option value="option-3">Option 3</sl-option>
+          </sl-select>
+          <sl-select>
+            <sl-option value="option-1">Option 1</sl-option>
+            <sl-option value="option-2">Option 2</sl-option>
+            <sl-option value="option-3">Option 3</sl-option>
+          </sl-select>
+          <sl-select>
+            <sl-option value="option-1">Option 1</sl-option>
+            <sl-option value="option-2">Option 2</sl-option>
+            <sl-option value="option-3">Option 3</sl-option>
+          </sl-select>
+        </div>
+
+
+        <sl-checkbox>I agree to the theater’s terms and conditions</sl-checkbox>
+
+        <sl-button>Button</sl-button>
+
+        </form>
+      </div>
+    `;
     }
   };
   customElements.define("vulkano-webcomponent", VulkanoWebcomponent);

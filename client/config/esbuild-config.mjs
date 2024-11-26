@@ -4,6 +4,8 @@ import { sassPlugin } from 'esbuild-sass-plugin';
 import eslint from 'esbuild-plugin-eslint';
 import esbuildPluginTsc from 'esbuild-plugin-tsc';
 
+import sassPlugin2 from 'esbuild-plugin-sass';
+
 // client/main.js
 let main_js = await esbuild.context({
   entryPoints: ['client/main.js'],
@@ -21,11 +23,15 @@ await main_js.watch();
 let vulkano_webcomponent = await esbuild.context({
   entryPoints: ['client/components/vulkano-webcomponent/main.js'],
   bundle: true,
+  loader: {
+    '.css': 'text', // Importa los archivos CSS como texto
+  },
   outfile: 'public/js/vulkano-webcomponent.js',
   logLevel: 'warning',
   sourcemap: true,
   plugins: [
-    eslint({ fix: true, })
+    eslint({ fix: true, }),
+    sassPlugin2(), // Usamos el plugin para compilar SCSS a CSS
   ]
 });
 await vulkano_webcomponent.watch();

@@ -17,10 +17,12 @@
     "rm:node_modules": "rm -rf node_modules/* node_modules/.*"
   },
   "dependencies": {
+    "@shoelace-style/shoelace": "^2.18.0",
     "@vulkano/core": "^1.1.0",
     "bluebird": "^3.7.2",
     "esbuild": "^0.20.2",
     "esbuild-plugin-eslint": "^0.3.12",
+    "esbuild-plugin-sass": "^1.0.1",
     "esbuild-plugin-tsc": "^0.4.0",
     "esbuild-sass-plugin": "^3.2.0",
     "foundation": "^4.2.1",
