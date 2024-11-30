@@ -7521,6 +7521,9 @@
   // node_modules/@shoelace-style/shoelace/dist/chunks/chunk.X4UCNCJG.js
   SlCheckbox.define("sl-checkbox");
 
+  // node_modules/@shoelace-style/shoelace/dist/chunks/chunk.HBPNMM7A.js
+  SlIcon.define("sl-icon");
+
   // client/main.js
   setBasePath("/path/to/shoelace/dist");
 })();

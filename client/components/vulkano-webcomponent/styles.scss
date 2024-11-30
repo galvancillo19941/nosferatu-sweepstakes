@@ -1,3 +1,80 @@
+@import './fonts.scss';
+
 .bg-nosferatu {
-  background-color: red;
+  background-color: #010307;
+  color: white;
+  padding: 50px;
+
+  h2 {
+    font-family: 'AbsolutHeadline2021';
+  }
+
+  .input-style {
+    margin-bottom: 15px;
+
+
+    &::part(base) {
+      background-color: transparent;
+      border: none;
+      border-bottom: 1px solid white;
+      border-radius: 0;
+      box-shadow: none !important;
+
+      .input--standard.input--focused:not(.input--disabled) {
+
+        box-shadow: none !important
+
+      }
+
+    }
+
+    &::part(input) {
+      color: white;
+      box-shadow: none !important;
+    }
+
+  }
+
+  .select-style {
+
+    margin-bottom: 15px;
+
+    &::part(combobox) {
+      background-color: transparent;
+      border: none;
+      border-bottom: 1px solid white;
+      border-radius: 0;
+    }
+
+    &::part(display-input) {
+      color: white;
+    }
+
+  }
+
+  .contain-select {
+
+    .column {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      grid-gap: 15px;
+    }
+
+  }
+
+  .check {
+    margin-top: 20px;
+  }
+
+  .btn-next {
+
+    &::part(base) {
+      background-color: #474848;
+      color: black;
+      border: none;
+      margin-top: 20px;
+    }
+
+  }
+
 }

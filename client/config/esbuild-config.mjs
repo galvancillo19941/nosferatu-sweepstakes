@@ -25,6 +25,8 @@ let vulkano_webcomponent = await esbuild.context({
   bundle: true,
   loader: {
     '.css': 'text', // Importa los archivos CSS como texto
+    '.woff': 'file', // Configura para manejar archivos .woff
+    '.woff2': 'file', // Configura para manejar archivos .woff2
   },
   outfile: 'public/js/vulkano-webcomponent.js',
   logLevel: 'warning',

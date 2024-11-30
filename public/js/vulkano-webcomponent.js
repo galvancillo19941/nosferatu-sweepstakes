@@ -568,13 +568,17 @@
   r4?.({ LitElement: s3 });
   (globalThis.litElementVersions ??= []).push("4.0.4");
 
-  // ../../../tmp/tmp-30873-uBcUrk3dnLe8/nosferatu-sweepstakes/client/components/vulkano-webcomponent/styles.css
-  var styles_default = ".bg-nosferatu{background-color:red}";
+  // ../../../tmp/tmp-14361-l92tKaIfjGd8/nosferatu-sweepstakes/client/components/vulkano-webcomponent/styles.css
+  var styles_default = '@font-face{font-family:"AbsolutHeadline2021";src:url("https://nyc3.digitaloceanspaces.com/archeio2/absolut/absolut-outandopen/fonts/AbsolutHeadline2021-Condensed.woff") format("woff");font-weight:normal;font-style:normal}.bg-nosferatu{background-color:#010307;color:white;padding:50px}.bg-nosferatu h2{font-family:"AbsolutHeadline2021"}.bg-nosferatu .input-style{margin-bottom:15px}.bg-nosferatu .input-style::part(base){background-color:transparent;border:none;border-bottom:1px solid white;border-radius:0;box-shadow:none!important}.bg-nosferatu .input-style::part(base) .input--standard.input--focused:not(.input--disabled){box-shadow:none!important}.bg-nosferatu .input-style::part(input){color:white;box-shadow:none!important}.bg-nosferatu .select-style{margin-bottom:15px}.bg-nosferatu .select-style::part(combobox){background-color:transparent;border:none;border-bottom:1px solid white;border-radius:0}.bg-nosferatu .select-style::part(display-input){color:white}.bg-nosferatu .contain-select .column{display:grid;grid-template-columns:auto auto auto;grid-gap:15px}.bg-nosferatu .check{margin-top:20px}.bg-nosferatu .btn-next::part(base){background-color:#474848;color:black;border:none;margin-top:20px}';
 
   // client/components/vulkano-webcomponent/main.js
   var VulkanoWebcomponent = class extends s3 {
     static properties = {
-      name: { type: String }
+      name: { type: String },
+      Day: { type: Array },
+      Month: { type: Array },
+      Years: { type: Array },
+      datos: { type: Object }
     };
     constructor() {
       super();
@@ -582,6 +586,53 @@
       const sheet = new CSSStyleSheet();
       sheet.replaceSync(styles_default);
       this.constructor.stylesheet = sheet;
+      this.Day = [];
+      this.Month = [
+        {
+          month: "January"
+        },
+        {
+          month: "February"
+        },
+        {
+          month: "March"
+        },
+        {
+          month: "April"
+        },
+        {
+          month: "May"
+        },
+        {
+          month: "June"
+        },
+        {
+          month: "July"
+        },
+        {
+          month: "August"
+        },
+        {
+          month: "September"
+        },
+        {
+          month: "October"
+        },
+        {
+          month: "November"
+        },
+        {
+          month: "December"
+        }
+      ];
+      this.Years = [];
+      this.datos = {
+        your_name: "",
+        email: "",
+        day: "",
+        month: ""
+      };
+      this.fieldWithBlur = null;
     }
     firstUpdated() {
       let shoelace_basepath = "/vendors/shoelace";
@@ -592,11 +643,76 @@
       shoelacecss.rel = "stylesheet";
       shoelacecss.href = `${shoelace_basepath}/themes/light.css`;
       document.head.appendChild(shoelacecss);
+      for (let i4 = 1; i4 <= 31; i4++) {
+        this.Day.push({ day: i4 });
+      }
+      for (let year = 1950; year <= 2024; year++) {
+        this.Years.push({ year });
+      }
       this.requestUpdate();
     }
     connectedCallback() {
       super.connectedCallback();
       this.shadowRoot.adoptedStyleSheets = [this.constructor.stylesheet];
+    }
+    onChange(e4) {
+      this.datos = {
+        ...this.datos,
+        [e4.target.name]: e4.target.value
+      };
+      if (this.fieldWithBlur) {
+        this.validationErrorFields(this.fieldWithBlur);
+      }
+      this.requestUpdate();
+    }
+    onBlur(fieldName) {
+      this.fieldWithBlur = fieldName;
+    }
+    onInput(fieldName) {
+      this.fieldWithBlur = fieldName;
+      this.validationErrorFields(fieldName);
+    }
+    validateAllFields() {
+      const requiredFields = ["your_name", "day", "month", "year"];
+      requiredFields.forEach((fieldName) => {
+        this.validationErrorFields(fieldName);
+      });
+    }
+    validationErrorFields(fieldName) {
+      const field = this.shadowRoot.querySelector(`[name="${fieldName}"]`);
+      const nameError = this.shadowRoot.querySelector(`#name-error-${fieldName}`);
+      if (field) {
+        if (!field.value.trim()) {
+          nameError.hidden = false;
+          field.classList.add("error");
+        } else {
+          field.classList.remove("error");
+          nameError.hidden = true;
+        }
+      }
+    }
+    validateEmail(e4) {
+      const nameError = this.shadowRoot.querySelector("#name-error-email");
+      const field = this.shadowRoot.querySelector('[name="email"]');
+      const regexEmail = /^[a-zA-Z0-9][a-zA-Z0-9._-]{0,62}[a-zA-Z0-9]@[a-zA-Z0-9][a-zA-Z0-9.-]{0,253}[a-zA-Z0-9]\.[a-zA-Z]{2,4}$/;
+      let validate = false;
+      const emailData = e4 === void 0 ? this.datos.email : e4.target.value;
+      if (regexEmail.test(emailData)) {
+        validate = true;
+      }
+      if (!validate) {
+        nameError.hidden = false;
+        field.classList.add("error");
+      } else {
+        nameError.hidden = true;
+        field.classList.remove("error");
+        this.validateEmailStatus = true;
+      }
+    }
+    handlesubmit() {
+      this.validateAllFields();
+      this.validateEmail();
+      console.log("datos", this.datos);
     }
     render() {
       return x`
@@ -606,31 +722,95 @@
 
         <form action="">
 
-        <sl-input label="Your name (as it appears on your ID)"></sl-input>
-        <sl-input label="Your email address"></sl-input>
+        <div class="contain-input">
+          <sl-input
+            autocomplete="off"
+            name="your_name"
+            @blur=${(e4) => this.onBlur(e4.target.name)}
+            @input=${() => this.onInput("your_name")}
+            @sl-change=${this.onChange}
+            placeholder="Name"
+            class="input-style">
+            <span slot="label"> Your name${x`<span style="color: #7d7a7a"> (as it appears on your ID)</span>`}</span>
+          </sl-input>
+          <div id="name-error-your_name" aria-live="polite" class="name-error" hidden>error name</div>
+        </div>
 
-        <div class="contain-select">
-          <sl-select>
-            <sl-option value="option-1">Option 1</sl-option>
-            <sl-option value="option-2">Option 2</sl-option>
-            <sl-option value="option-3">Option 3</sl-option>
-          </sl-select>
-          <sl-select>
-            <sl-option value="option-1">Option 1</sl-option>
-            <sl-option value="option-2">Option 2</sl-option>
-            <sl-option value="option-3">Option 3</sl-option>
-          </sl-select>
-          <sl-select>
-            <sl-option value="option-1">Option 1</sl-option>
-            <sl-option value="option-2">Option 2</sl-option>
-            <sl-option value="option-3">Option 3</sl-option>
-          </sl-select>
+        <div class="contain-input">
+          <sl-input
+
+            name="email"
+            @sl-change=${this.onChange}
+            @keyup=${(e4) => this.validateEmail(e4)}
+            @input=${(e4) => this.validateEmail(e4)}
+            label="Your email address"
+            placeholder="Email"
+            class="input-style">
+          </sl-input>
+          <div id="name-error-email" aria-live="polite" class="name-error" hidden>error email</div>
         </div>
 
 
-        <sl-checkbox>I agree to the theater’s terms and conditions</sl-checkbox>
+        <div class="contain-select">
 
-        <sl-button>Button</sl-button>
+          <label for="">Your birth date</label>
+
+          <div class="column">
+            <div class="contain-input">
+                <sl-select
+                    name="day"
+                    @blur=${(e4) => this.onBlur(e4.target.name)}
+                    @input=${() => this.onInput("day")}
+                    @sl-change=${this.onChange}
+                    placeholder="Day"
+                    class="select-style">
+                    ${this.Day.map((i4) => x`
+                        <sl-option value="${i4.day}">${i4.day}</sl-option>
+                    `)}
+                </sl-select>
+                <div id="name-error-day" aria-live="polite" class="name-error" hidden>error day</div>
+            </div>
+
+            <div class="contain-input">
+              <sl-select
+                  name="month"
+                  @blur=${(e4) => this.onBlur(e4.target.name)}
+                  @input=${() => this.onInput("month")}
+                  @sl-change=${this.onChange}
+                  placeholder="Month"
+                  class="select-style">
+                ${this.Month.map((i4) => x`
+                    <sl-option value="${i4.month}">${i4.month}</sl-option>
+                `)}
+              </sl-select>
+              <div id="name-error-month" aria-live="polite" class="name-error" hidden>error month</div>
+            </div>
+
+            <div class="contain-input">
+              <sl-select
+                  name="year"
+                  @blur=${(e4) => this.onBlur(e4.target.name)}
+                  @input=${() => this.onInput("year")}
+                  @sl-change=${this.onChange}
+                  placeholder="Year"
+                  class="select-style">
+                ${this.Years.map((i4) => x`
+                    <sl-option value="${i4.year}">${i4.year}</sl-option>
+                `)}
+              </sl-select>
+              <div id="name-error-year" aria-live="polite" class="name-error" hidden>error year</div>
+            </div>
+          </div>
+
+        </div>
+
+        <sl-checkbox class="check">
+            I AGREE THAT NBCUNIVERSAL AND ITS AFFILIATES, INCLUDING FOCUS INSIDER AND UNIVERSAL LOYALTY, MAY SEND ME THE LATEST NEWS, PROMOTIONS AND MORE. I WANT TO RECEIVE INFORMATION FROM FOCUS FEATURES.
+        </sl-checkbox>
+
+        <br>
+
+        <sl-button class="btn-next" @click=${this.handlesubmit}>Button</sl-button>
 
         </form>
       </div>
