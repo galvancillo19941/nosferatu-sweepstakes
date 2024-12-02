@@ -85,6 +85,18 @@
       font-weight: 400;
     }
 
+    &.error {
+      &::part(combobox) {
+        background-color: rgba( #F74354, .20);
+        color: #ffffffda !important;
+      }
+
+      &::part(display-input)::placeholder {
+         color: #ffffffbd !important;
+      }
+
+    }
+
     sl-option {
 
       &::part(base) {
@@ -131,6 +143,13 @@
       color: black
     }
 
+    &.error-check {
+
+      &::part(base) {
+        color: #F74354
+      }
+
+    }
 
 
   }

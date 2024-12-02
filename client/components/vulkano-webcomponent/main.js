@@ -66,7 +66,8 @@ export class VulkanoWebcomponent extends LitElement {
       your_name: '',
       email: '',
       day: '',
-      month: ''
+      month: '',
+      check: false
     };
     this.fieldWithBlur = null;
   }
@@ -187,8 +188,23 @@ export class VulkanoWebcomponent extends LitElement {
 
   handleDateValidations() {
     const nameError = this.shadowRoot.querySelector('#name-error-date');
+    const requiredFields = ['day', 'month', 'year'];
+
+    console.log('aqio');
 
     let validate = false;
+
+    requiredFields.forEach((fieldName) => {
+      const field = this.shadowRoot.querySelector(`[name="${fieldName}"]`);
+
+      if (field) {
+        if (!field.value.trim()) {
+          field.classList.add('error');
+        } else {
+          field.classList.remove('error');
+        }
+      }
+    });
 
     if (this.datos.day !== '' && this.datos.month !== '' && this.datos.year !== '') {
       validate = true;
@@ -196,19 +212,43 @@ export class VulkanoWebcomponent extends LitElement {
 
     if (!validate) {
       nameError.hidden = false;
-      // field.classList.add('error');
     } else {
       nameError.hidden = true;
-      // field.classList.remove('error');
       this.validateEmailStatus = true;
     }
 
+  }
+
+  handleCheck(e) {
+
+    this.datos.check = e.target.checked;
+
+    this.handleValidateCheck();
+
+  }
+
+  handleValidateCheck() {
+    const field = this.shadowRoot.querySelector('[name="check"]');
+
+    let validate = false;
+
+    if (this.datos.check) {
+      validate = true;
+    }
+
+    if (!validate) {
+      field.classList.add('error-check');
+    } else {
+      field.classList.remove('error-check');
+    }
   }
 
   handlesubmit() {
     this.validateAllFields();
     this.validateEmail();
     this.handleDateValidations();
+    this.handleValidateCheck();
+
     console.log('datos', this.datos);
   }
 
@@ -260,6 +300,8 @@ export class VulkanoWebcomponent extends LitElement {
                 <sl-select
                     name="day"
                     @sl-change=${this.onChange}
+                    @blur=${this.handleDateValidations}
+                    @input=${this.handleDateValidations}
                     placeholder="Day"
                     class="select-style">
                     ${this.Day.map((i) => html`
@@ -272,7 +314,6 @@ export class VulkanoWebcomponent extends LitElement {
             <div class="contain-input">
               <sl-select
                   name="month"
-
                   @sl-change=${this.onChange}
                   placeholder="Month"
                   class="select-style">
@@ -285,7 +326,6 @@ export class VulkanoWebcomponent extends LitElement {
             <div class="contain-input">
               <sl-select
                   name="year"
-
                   @sl-change=${this.onChange}
                   placeholder="Year"
                   class="select-style">
@@ -299,7 +339,7 @@ export class VulkanoWebcomponent extends LitElement {
 
         </div>
 
-        <sl-checkbox class="check">
+        <sl-checkbox class="check" name="check" @sl-change=${this.handleCheck}>
             I AGREE THAT NBCUNIVERSAL AND ITS AFFILIATES, INCLUDING FOCUS INSIDER AND UNIVERSAL LOYALTY, MAY SEND ME THE LATEST NEWS, PROMOTIONS AND MORE. I WANT TO RECEIVE INFORMATION FROM FOCUS FEATURES.
         </sl-checkbox>
 

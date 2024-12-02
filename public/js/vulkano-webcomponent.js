@@ -569,7 +569,7 @@
   (globalThis.litElementVersions ??= []).push("4.0.4");
 
   // ../../../tmp/tmp-13036-m6yQ3uyZMRmr/nosferatu-sweepstakes/client/components/vulkano-webcomponent/styles.css
-  var styles_default = ':root,:host{--sl-input-focus-ring-color: transparent;--sl-color-primary-600: #010307}.bg-nosferatu{background-color:#010307;color:white;font-family:"oldkirkItalic"}.bg-nosferatu h2{font-family:"NosfrakturRegular";font-weight:400;font-size:32px}.bg-nosferatu .contain-input{margin-bottom:15px}.bg-nosferatu .contain-input .name-error{font-family:"Poppins",sans-serif;font-weight:400;color:#F74354;font-style:italic;font-size:11px;margin-top:8px}.bg-nosferatu .input-style::part(base){background-color:transparent;border:none;border-bottom:1px solid white;border-radius:0;box-shadow:none!important}.bg-nosferatu .input-style::part(base) .input--standard.input--focused:not(.input--disabled){box-shadow:none!important}.bg-nosferatu .input-style::part(input){color:white;box-shadow:none!important;font-family:"Poppins",sans-serif;font-weight:400}.bg-nosferatu .input-style::part(form-control-label){font-size:16px}.bg-nosferatu .input-style.error::part(base){background-color:rgba(247,67,84,0.2)}.bg-nosferatu .input-style.error::part(input)::placeholder{color:#ffffffda}.bg-nosferatu .select-style::part(combobox){background-color:transparent;border:none;border-bottom:1px solid white;border-radius:0;font-family:"Poppins",sans-serif;font-weight:400}.bg-nosferatu .select-style sl-option::part(base){font-family:"Poppins",sans-serif;font-weight:400}.bg-nosferatu .select-style sl-option::part(base).option--current{background-color:#010307}.bg-nosferatu .select-style::part(display-input){color:white}.bg-nosferatu .contain-select .column{display:grid;grid-template-columns:auto auto auto;grid-gap:15px}.bg-nosferatu .check{margin-top:20px}.bg-nosferatu .check::part(base){font-family:"oldkirkItalic";font-weight:400;text-transform:uppercase}.bg-nosferatu .check::part(control--checked){background-color:white}.bg-nosferatu .check::part(checked-icon){color:black}.bg-nosferatu .btn-next{margin-top:40px}.bg-nosferatu .btn-next::part(base){background-color:#474848;color:black;border:none;margin-top:20px;font-family:"NosfrakturRegular";font-size:18px;width:80px;height:40px;border-radius:50px}';
+  var styles_default = ':root,:host{--sl-input-focus-ring-color: transparent;--sl-color-primary-600: #010307}.bg-nosferatu{background-color:#010307;color:white;font-family:"oldkirkItalic"}.bg-nosferatu h2{font-family:"NosfrakturRegular";font-weight:400;font-size:32px}.bg-nosferatu .contain-input{margin-bottom:15px}.bg-nosferatu .contain-input .name-error{font-family:"Poppins",sans-serif;font-weight:400;color:#F74354;font-style:italic;font-size:11px;margin-top:8px}.bg-nosferatu .input-style::part(base){background-color:transparent;border:none;border-bottom:1px solid white;border-radius:0;box-shadow:none!important}.bg-nosferatu .input-style::part(base) .input--standard.input--focused:not(.input--disabled){box-shadow:none!important}.bg-nosferatu .input-style::part(input){color:white;box-shadow:none!important;font-family:"Poppins",sans-serif;font-weight:400}.bg-nosferatu .input-style::part(form-control-label){font-size:16px}.bg-nosferatu .input-style.error::part(base){background-color:rgba(247,67,84,0.2)}.bg-nosferatu .input-style.error::part(input)::placeholder{color:#ffffffda}.bg-nosferatu .select-style::part(combobox){background-color:transparent;border:none;border-bottom:1px solid white;border-radius:0;font-family:"Poppins",sans-serif;font-weight:400}.bg-nosferatu .select-style.error::part(combobox){background-color:rgba(247,67,84,0.2);color:#ffffffda!important}.bg-nosferatu .select-style.error::part(display-input)::placeholder{color:#ffffffbd!important}.bg-nosferatu .select-style sl-option::part(base){font-family:"Poppins",sans-serif;font-weight:400}.bg-nosferatu .select-style sl-option::part(base).option--current{background-color:#010307}.bg-nosferatu .select-style::part(display-input){color:white}.bg-nosferatu .contain-select .column{display:grid;grid-template-columns:auto auto auto;grid-gap:15px}.bg-nosferatu .check{margin-top:20px}.bg-nosferatu .check::part(base){font-family:"oldkirkItalic";font-weight:400;text-transform:uppercase}.bg-nosferatu .check::part(control--checked){background-color:white}.bg-nosferatu .check::part(checked-icon){color:black}.bg-nosferatu .check.error-check::part(base){color:#F74354}.bg-nosferatu .btn-next{margin-top:40px}.bg-nosferatu .btn-next::part(base){background-color:#474848;color:black;border:none;margin-top:20px;font-family:"NosfrakturRegular";font-size:18px;width:80px;height:40px;border-radius:50px}';
 
   // client/components/vulkano-webcomponent/main.js
   var VulkanoWebcomponent = class extends s3 {
@@ -630,7 +630,8 @@
         your_name: "",
         email: "",
         day: "",
-        month: ""
+        month: "",
+        check: false
       };
       this.fieldWithBlur = null;
     }
@@ -719,7 +720,19 @@
     }
     handleDateValidations() {
       const nameError = this.shadowRoot.querySelector("#name-error-date");
+      const requiredFields = ["day", "month", "year"];
+      console.log("aqio");
       let validate = false;
+      requiredFields.forEach((fieldName) => {
+        const field = this.shadowRoot.querySelector(`[name="${fieldName}"]`);
+        if (field) {
+          if (!field.value.trim()) {
+            field.classList.add("error");
+          } else {
+            field.classList.remove("error");
+          }
+        }
+      });
       if (this.datos.day !== "" && this.datos.month !== "" && this.datos.year !== "") {
         validate = true;
       }
@@ -730,10 +743,27 @@
         this.validateEmailStatus = true;
       }
     }
+    handleCheck(e4) {
+      this.datos.check = e4.target.checked;
+      this.handleValidateCheck();
+    }
+    handleValidateCheck() {
+      const field = this.shadowRoot.querySelector('[name="check"]');
+      let validate = false;
+      if (this.datos.check) {
+        validate = true;
+      }
+      if (!validate) {
+        field.classList.add("error-check");
+      } else {
+        field.classList.remove("error-check");
+      }
+    }
     handlesubmit() {
       this.validateAllFields();
       this.validateEmail();
       this.handleDateValidations();
+      this.handleValidateCheck();
       console.log("datos", this.datos);
     }
     render() {
@@ -783,6 +813,8 @@
                 <sl-select
                     name="day"
                     @sl-change=${this.onChange}
+                    @blur=${this.handleDateValidations}
+                    @input=${this.handleDateValidations}
                     placeholder="Day"
                     class="select-style">
                     ${this.Day.map((i4) => x`
@@ -795,7 +827,6 @@
             <div class="contain-input">
               <sl-select
                   name="month"
-
                   @sl-change=${this.onChange}
                   placeholder="Month"
                   class="select-style">
@@ -808,7 +839,6 @@
             <div class="contain-input">
               <sl-select
                   name="year"
-
                   @sl-change=${this.onChange}
                   placeholder="Year"
                   class="select-style">
@@ -822,7 +852,7 @@
 
         </div>
 
-        <sl-checkbox class="check">
+        <sl-checkbox class="check" name="check" @sl-change=${this.handleCheck}>
             I AGREE THAT NBCUNIVERSAL AND ITS AFFILIATES, INCLUDING FOCUS INSIDER AND UNIVERSAL LOYALTY, MAY SEND ME THE LATEST NEWS, PROMOTIONS AND MORE. I WANT TO RECEIVE INFORMATION FROM FOCUS FEATURES.
         </sl-checkbox>
 
