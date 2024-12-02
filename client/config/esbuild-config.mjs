@@ -65,4 +65,18 @@ let style = await esbuild.context({
 });
 await style.watch();
 
+// client/fonts.scss
+let styleFonts = await esbuild.context({
+  entryPoints: ['client/scss/fonts.scss'],
+  bundle: false,
+  outfile: 'public/css/fonts.css',
+  logLevel: 'warning',
+  sourcemap: true,
+  plugins: [sassPlugin({
+    loadPaths: ['node_modules/foundation-sites/scss'],
+    embedded: true
+  })]
+});
+await styleFonts.watch();
+
 console.log('[esbuild] Watching for changes...');

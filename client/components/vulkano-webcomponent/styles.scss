@@ -1,17 +1,39 @@
-@import './fonts.scss';
+
+// COLORES
+:root,
+:host {
+  // --sl-input-border-color-focus: #0000BD;
+  --sl-input-focus-ring-color: transparent;
+  --sl-color-primary-600: #010307;
+
+}
 
 .bg-nosferatu {
   background-color: #010307;
   color: white;
-  padding: 50px;
+  font-family: 'oldkirkItalic';
 
   h2 {
-    font-family: 'AbsolutHeadline2021';
+    font-family: 'NosfrakturRegular';
+    font-weight: 400;
+    font-size: 32px;
+  }
+
+  .contain-input {
+    margin-bottom: 15px;
+
+    .name-error {
+      font-family: "Poppins", sans-serif;
+      font-weight: 400;
+      color: #F74354;
+      font-style: italic;
+      font-size: 11px;
+      margin-top: 8px;
+    }
+
   }
 
   .input-style {
-    margin-bottom: 15px;
-
 
     &::part(base) {
       background-color: transparent;
@@ -31,19 +53,49 @@
     &::part(input) {
       color: white;
       box-shadow: none !important;
+      font-family: "Poppins", sans-serif;
+      font-weight: 400;
+    }
+
+    &::part(form-control-label) {
+      font-size: 16px;
+    }
+
+    &.error {
+      &::part(base) {
+        background-color: rgba( #F74354, .20);
+      }
+
+      &::part(input)::placeholder {
+        color: #ffffffda;
+      }
+
     }
 
   }
 
   .select-style {
 
-    margin-bottom: 15px;
-
     &::part(combobox) {
       background-color: transparent;
       border: none;
       border-bottom: 1px solid white;
       border-radius: 0;
+      font-family: "Poppins", sans-serif;
+      font-weight: 400;
+    }
+
+    sl-option {
+
+      &::part(base) {
+        font-family: "Poppins", sans-serif;
+        font-weight: 400;
+
+        &.option--current {
+          background-color: #010307;
+        }
+
+      }
     }
 
     &::part(display-input) {
@@ -64,15 +116,38 @@
 
   .check {
     margin-top: 20px;
+
+    &::part(base) {
+      font-family: 'oldkirkItalic';
+      font-weight: 400;
+      text-transform: uppercase;
+    }
+
+    &::part(control--checked) {
+      background-color: white;
+    }
+
+    &::part(checked-icon) {
+      color: black
+    }
+
+
+
   }
 
   .btn-next {
+    margin-top: 40px;
 
     &::part(base) {
       background-color: #474848;
       color: black;
       border: none;
       margin-top: 20px;
+      font-family: 'NosfrakturRegular';
+      font-size: 18px;
+      width: 80px;
+      height: 40px;
+      border-radius: 50px;
     }
 
   }

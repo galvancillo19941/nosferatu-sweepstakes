@@ -84,6 +84,16 @@ export class VulkanoWebcomponent extends LitElement {
     shoelacecss.href = `${shoelace_basepath}/themes/light.css`;
     document.head.appendChild(shoelacecss);
 
+    const fonts = document.createElement('link');
+    fonts.rel = 'stylesheet';
+    fonts.href = '/css/fonts.css';
+    document.head.appendChild(fonts);
+
+    const fontsPoppins = document.createElement('link');
+    fontsPoppins.rel = 'stylesheet';
+    fontsPoppins.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"';
+    document.head.appendChild(fontsPoppins);
+
     for (let i = 1; i <= 31; i++) {
       this.Day.push({ day: i });
     }
@@ -129,7 +139,7 @@ export class VulkanoWebcomponent extends LitElement {
 
   validateAllFields() {
 
-    const requiredFields = ['your_name', 'day', 'month', 'year'];
+    const requiredFields = ['your_name'];
     requiredFields.forEach((fieldName) => {
       this.validationErrorFields(fieldName);
     });
@@ -175,9 +185,30 @@ export class VulkanoWebcomponent extends LitElement {
 
   }
 
+  handleDateValidations() {
+    const nameError = this.shadowRoot.querySelector('#name-error-date');
+
+    let validate = false;
+
+    if (this.datos.day !== '' && this.datos.month !== '' && this.datos.year !== '') {
+      validate = true;
+    }
+
+    if (!validate) {
+      nameError.hidden = false;
+      // field.classList.add('error');
+    } else {
+      nameError.hidden = true;
+      // field.classList.remove('error');
+      this.validateEmailStatus = true;
+    }
+
+  }
+
   handlesubmit() {
     this.validateAllFields();
     this.validateEmail();
+    this.handleDateValidations();
     console.log('datos', this.datos);
   }
 
@@ -201,7 +232,7 @@ export class VulkanoWebcomponent extends LitElement {
             class="input-style">
             <span slot="label"> Your name${html`<span style="color: #7d7a7a"> (as it appears on your ID)</span>`}</span>
           </sl-input>
-          <div id="name-error-your_name" aria-live="polite" class="name-error" hidden>error name</div>
+          <div id="name-error-your_name" aria-live="polite" class="name-error" hidden>Please enter your name</div>
         </div>
 
         <div class="contain-input">
@@ -215,7 +246,7 @@ export class VulkanoWebcomponent extends LitElement {
             placeholder="Email"
             class="input-style">
           </sl-input>
-          <div id="name-error-email" aria-live="polite" class="name-error" hidden>error email</div>
+          <div id="name-error-email" aria-live="polite" class="name-error" hidden>Please enter your email address</div>
         </div>
 
 
@@ -225,10 +256,9 @@ export class VulkanoWebcomponent extends LitElement {
 
           <div class="column">
             <div class="contain-input">
+
                 <sl-select
                     name="day"
-                    @blur=${(e) => this.onBlur(e.target.name)}
-                    @input=${() => this.onInput('day')}
                     @sl-change=${this.onChange}
                     placeholder="Day"
                     class="select-style">
@@ -236,14 +266,13 @@ export class VulkanoWebcomponent extends LitElement {
                         <sl-option value="${i.day}">${i.day}</sl-option>
                     ` )}
                 </sl-select>
-                <div id="name-error-day" aria-live="polite" class="name-error" hidden>error day</div>
+                <div id="name-error-date" aria-live="polite" class="name-error" hidden>Please enter your date</div>
             </div>
 
             <div class="contain-input">
               <sl-select
                   name="month"
-                  @blur=${(e) => this.onBlur(e.target.name)}
-                  @input=${() => this.onInput('month')}
+
                   @sl-change=${this.onChange}
                   placeholder="Month"
                   class="select-style">
@@ -251,14 +280,12 @@ export class VulkanoWebcomponent extends LitElement {
                     <sl-option value="${i.month}">${i.month}</sl-option>
                 ` )}
               </sl-select>
-              <div id="name-error-month" aria-live="polite" class="name-error" hidden>error month</div>
             </div>
 
             <div class="contain-input">
               <sl-select
                   name="year"
-                  @blur=${(e) => this.onBlur(e.target.name)}
-                  @input=${() => this.onInput('year')}
+
                   @sl-change=${this.onChange}
                   placeholder="Year"
                   class="select-style">
@@ -266,7 +293,7 @@ export class VulkanoWebcomponent extends LitElement {
                     <sl-option value="${i.year}">${i.year}</sl-option>
                 ` )}
               </sl-select>
-              <div id="name-error-year" aria-live="polite" class="name-error" hidden>error year</div>
+
             </div>
           </div>
 
@@ -278,7 +305,7 @@ export class VulkanoWebcomponent extends LitElement {
 
         <br>
 
-        <sl-button class="btn-next" @click=${this.handlesubmit}>Button</sl-button>
+        <sl-button class="btn-next" @click=${this.handlesubmit}>Next</sl-button>
 
         </form>
       </div>

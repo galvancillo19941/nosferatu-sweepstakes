@@ -648,4 +648,12 @@ code {
     page-break-inside: auto;
   }
 }
+body {
+  background-color: #010307;
+}
+.contain-embed {
+  width: 670px;
+  margin: auto;
+  background-color: #010307;
+}
 /*# sourceMappingURL=style.css.map */

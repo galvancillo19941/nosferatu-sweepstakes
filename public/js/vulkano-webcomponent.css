@@ -1,5 +1,56 @@
 /* client/components/vulkano-webcomponent/styles.scss */
+@font-face {
+  font-family: "AbsolutHeadline2021";
+  src: url(https://nyc3.digitaloceanspaces.com/archeio2/absolut/absolut-outandopen/fonts/AbsolutHeadline2021-Condensed.woff) format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
 .bg-nosferatu {
-  background-color: yellow;
+  background-color: #010307;
+  color: white;
+  padding: 50px;
+}
+.bg-nosferatu h2 {
+  font-family: "AbsolutHeadline2021";
+}
+.bg-nosferatu .contain-input {
+  margin-bottom: 15px;
+}
+.bg-nosferatu .input-style::part(base) {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid white;
+  border-radius: 0;
+  box-shadow: none !important;
+}
+.bg-nosferatu .input-style::part(base) .input--standard.input--focused:not(.input--disabled) {
+  box-shadow: none !important;
+}
+.bg-nosferatu .input-style::part(input) {
+  color: white;
+  box-shadow: none !important;
+}
+.bg-nosferatu .select-style::part(combobox) {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid white;
+  border-radius: 0;
+}
+.bg-nosferatu .select-style::part(display-input) {
+  color: white;
+}
+.bg-nosferatu .contain-select .column {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-gap: 15px;
+}
+.bg-nosferatu .check {
+  margin-top: 20px;
+}
+.bg-nosferatu .btn-next::part(base) {
+  background-color: #474848;
+  color: black;
+  border: none;
+  margin-top: 20px;
 }
 /*# sourceMappingURL=vulkano-webcomponent.css.map */
